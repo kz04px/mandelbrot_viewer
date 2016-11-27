@@ -1,0 +1,6 @@
+# Window
+width=640
+height=640
+fullscreen=GL_FALSE
+trippy=0
+iterations=50
