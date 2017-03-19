@@ -4,3 +4,5 @@ height=640
 fullscreen=GL_FALSE
 trippy=0
 iterations=50
+cam_x=0.0
+cam_y=0.0

@@ -116,6 +116,18 @@ void glfw_keyboard_callback(GLFWwindow* window, int key, int scancode, int actio
         settings->iterations = 0;
       }
       break;
+    case GLFW_KEY_F2:
+      break;
+    case GLFW_KEY_F12:
+      break;
+    case GLFW_KEY_C:
+      settings->renderer = CPU_RENDERER;
+      printf("Renderer: CPU\n");
+      break;
+    case GLFW_KEY_G:
+      settings->renderer = GPU_RENDERER;
+      printf("Genderer: CPU\n");
+      break;
     case GLFW_KEY_R:
       settings->frame = 0;
       settings->cam.pos[0] = 0.0;
@@ -125,17 +137,25 @@ void glfw_keyboard_callback(GLFWwindow* window, int key, int scancode, int actio
       settings->trippy = 0;
       settings->redraw = 1;
       break;
-    case GLFW_KEY_T:
-      settings->trippy = 1-settings->trippy;
-      settings->redraw = 1;
-      break;
     case GLFW_KEY_S:
       printf("Position:\n");
       printf("Zoom: %f\n", settings->cam.zoom);
       printf("Position: %f %f\n", settings->cam.pos[0], settings->cam.pos[1]);
-      printf("iterations: %i\n", settings->iterations);
+      printf("Iterations: %i\n", settings->iterations);
       printf("Tripply: %i\n", settings->trippy);
+      if(settings->renderer == GPU_RENDERER)
+      {
+        printf("Renderer: GPU\n");
+      }
+      else
+      {
+        printf("Renderer: CPU\n");
+      }
       printf("\n");
+      break;
+    case GLFW_KEY_T:
+      settings->trippy = 1-settings->trippy;
+      settings->redraw = 1;
       break;
     default:
       printf("Key: %c(%i) %i\n", key, key, action);

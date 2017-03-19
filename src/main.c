@@ -39,11 +39,12 @@ int main()
   settings->iterations = 50;
   settings->trippy = 0;
   settings->redraw = 1;
+  settings->renderer = GPU_RENDERER;
   
   r = load_settings(settings, "settings.dat");
   if(r != 0)
   {
-    print_log("ERROR: Failed to load settings.dat\n");
+    print_log("WARNING: Failed to load settings.dat\n");
   }
   settings->window_ratio = (float)settings->window_width/settings->window_height;
   
@@ -85,7 +86,7 @@ int main()
   
   glfwSetWindowUserPointer(window, settings);
 
-  // start GLEW extension handler
+  // Start GLEW extension handler
   glewExperimental = GL_TRUE;
   err = glewInit();
   while((err = glGetError()) != GL_NO_ERROR)
@@ -159,10 +160,10 @@ int main()
   GLuint texture_id = 0;
   glGenTextures(1, &texture_id);
   
-  // bind texture
+  // Bind texture
   glBindTexture(GL_TEXTURE_1D, texture_id);
   
-  // texture sampling/filtering operation.
+  // Texture sampling/filtering operation.
   glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_WRAP_S, GL_REPEAT);
   glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_WRAP_T, GL_REPEAT);
   glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -210,20 +211,27 @@ int main()
     
     if(settings->redraw)
     {
-      s_mat4 vp_matrix = ortho(-2.0,1.0, -1.0,1.0, 0.0,1.0);
-      
-      // Set uniforms
-      glUniformMatrix4fv(loc_vp_matrix, 1, GL_FALSE, vp_matrix.m);
-      glUniform2fv(center_loc, 1, settings->cam.pos);
-      glUniform1f(scale_loc, settings->cam.zoom);
-      glUniform1i(iter_loc, settings->iterations);
-      glUniform1i(offset_loc, settings->frame);
-      
-      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-      glUseProgram(shader_program);
-      
-      glBindVertexArray(vao);
-      glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+      if(settings->renderer == GPU_RENDERER)
+      {
+        s_mat4 vp_matrix = ortho(-2.0,1.0, -1.0,1.0, 0.0,1.0);
+        
+        // Set uniforms
+        glUniformMatrix4fv(loc_vp_matrix, 1, GL_FALSE, vp_matrix.m);
+        glUniform2fv(center_loc, 1, settings->cam.pos);
+        glUniform1f(scale_loc, settings->cam.zoom);
+        glUniform1i(iter_loc, settings->iterations);
+        glUniform1i(offset_loc, settings->frame);
+        
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glUseProgram(shader_program);
+        
+        glBindVertexArray(vao);
+        glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+      }
+      else
+      {
+        
+      }
     }
     
     settings->redraw = 0;

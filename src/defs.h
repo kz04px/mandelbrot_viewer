@@ -10,6 +10,9 @@
 #include <string.h>
 #include <assert.h>
 
+#define GPU_RENDERER 1
+#define CPU_RENDERER 0
+
 typedef struct
 {
   float pos[2];
@@ -27,6 +30,7 @@ typedef struct
   int trippy;
   int frame;
   int redraw;
+  int renderer;
 } s_settings;
 
 typedef struct
